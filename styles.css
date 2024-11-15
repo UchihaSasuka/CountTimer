@@ -1,0 +1,365 @@
+/* 基础样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 2em;
+}
+
+/* 场景创建表单 */
+.scene-form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  display: flex;
+  gap: 10px;
+}
+
+#sceneNameInput {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+#sceneNameInput:focus {
+  border-color: #3498db;
+}
+
+/* 场景卡片样式优化 */
+.scene-card {
+  background-color: #e8f4ff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: center;
+}
+
+.scene-card:nth-child(even) {
+  background-color: #fff0e6;
+}
+
+.scene-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.scene-card h3 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 1.4em;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.timer-info,
+.countdown-info {
+  margin: 15px auto;
+  padding: 25px;
+  max-width: 400px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.timer-info {
+  border-left: 4px solid #2ecc71;
+}
+
+.countdown-info {
+  border-left: 4px solid #e74c3c;
+}
+
+.elapsed-time,
+.remaining-time {
+  font-size: 2.8em !important;
+  font-weight: bold;
+  font-family: "Courier New", monospace;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  letter-spacing: 2px;
+}
+
+.elapsed-time {
+  color: #2c3e50 !important;
+}
+
+.remaining-time {
+  color: #e74c3c !important;
+}
+
+.start-time {
+  font-size: 1.1em !important;
+  color: #7f8c8d !important;
+  margin-top: 12px !important;
+  padding: 8px 15px;
+  border-radius: 20px;
+  background-color: rgba(127, 140, 141, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+.timer-info::before,
+.countdown-info::before {
+  content: "⏰";
+  position: absolute;
+  font-size: 80px;
+  opacity: 0.1;
+  right: -10px;
+  bottom: -20px;
+  transform: rotate(-15deg);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.timer-info.running,
+.countdown-info.running {
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.elapsed-time::before,
+.remaining-time::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 70%;
+  border-radius: 2px;
+}
+
+.elapsed-time::before {
+  background: linear-gradient(to bottom, #2ecc71, #27ae60);
+}
+
+.remaining-time::before {
+  background: linear-gradient(to bottom, #e74c3c, #c0392b);
+}
+
+.timer-info:hover,
+.countdown-info:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #2980b9;
+}
+
+.button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 0 20px;
+}
+
+.action-buttons .button {
+  min-width: 120px;
+}
+
+.timer-start {
+  background-color: #2ecc71;
+}
+
+.timer-start:hover {
+  background-color: #27ae60;
+}
+
+.timer-pause {
+  background-color: #e67e22;
+}
+
+.timer-pause:hover {
+  background-color: #d35400;
+}
+
+.timer-reset {
+  background-color: #e74c3c;
+}
+
+.timer-reset:hover {
+  background-color: #c0392b;
+}
+
+.delete-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s;
+  z-index: 1;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+/* 对话框样式 */
+dialog {
+  border: none;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+  width: 90%;
+
+  /* 添加以下样式实现居中 */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+}
+
+/* 对话框标题样式 */
+dialog h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.time-inputs {
+  display: flex;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.input-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.input-group label {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* 响应式设计 */
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  .scene-form {
+    flex-direction: column;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  .scene-card {
+    padding: 15px;
+  }
+
+  .timer-info,
+  .countdown-info {
+    padding: 20px;
+  }
+
+  .elapsed-time,
+  .remaining-time {
+    font-size: 2.2em !important;
+  }
+
+  .timer-info::before,
+  .countdown-info::before {
+    font-size: 60px;
+  }
+}

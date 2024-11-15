@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>场景计时器</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>场景计时器</h1>
+
+      <!-- 场景创建表单 -->
+      <div class="scene-form">
+        <input type="text" id="sceneNameInput" placeholder="输入场景名称" />
+        <button class="button" id="addSceneBtn">新建场景</button>
+      </div>
+
+      <!-- 场景列表 -->
+      <div id="sceneList"></div>
+
+      <!-- 倒计时设置对话框 -->
+      <dialog id="countdownDialog">
+        <form method="dialog">
+          <h3>设置倒计时</h3>
+          <div class="time-inputs">
+            <div class="input-group">
+              <input type="number" id="hours" min="0" value="0" />
+              <label>小时</label>
+            </div>
+            <div class="input-group">
+              <input type="number" id="minutes" min="0" max="59" value="0" />
+              <label>分钟</label>
+            </div>
+            <div class="input-group">
+              <input type="number" id="seconds" min="0" max="59" value="0" />
+              <label>秒</label>
+            </div>
+          </div>
+          <div class="dialog-buttons">
+            <button type="button" class="button cancel">取消</button>
+            <button type="submit" class="button confirm">确定</button>
+          </div>
+        </form>
+      </dialog>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
