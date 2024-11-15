@@ -76,6 +76,36 @@ class TimerApp {
     const savedScenes = localStorage.getItem("scenes");
     if (savedScenes) {
       this.scenes = JSON.parse(savedScenes);
+
+      // 恢复每个场景的计时器状态
+      this.scenes.forEach((scene) => {
+        // 恢复正计时
+        if (scene.timer.isRunning) {
+          scene.timer.interval = setInterval(() => {
+            scene.timer.elapsedTime = Date.now() - scene.timer.startTime;
+            this.updateSceneDisplay(scene);
+          }, 10);
+        }
+
+        // 恢复倒计时
+        if (scene.countdown.isRunning) {
+          scene.countdown.interval = setInterval(() => {
+            const now = Date.now();
+            scene.countdown.remainingTime = Math.max(
+              0,
+              scene.countdown.endTime - now
+            );
+
+            if (scene.countdown.remainingTime <= 0) {
+              this.stopCountdown(scene);
+              this.notifyCountdownEnd(scene);
+              return;
+            }
+
+            this.updateSceneDisplay(scene);
+          }, 100);
+        }
+      });
     }
   }
 
