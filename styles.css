@@ -326,6 +326,18 @@ dialog::backdrop {
   margin-top: 20px;
 }
 
+.dialog-buttons .button {
+  min-width: 120px;
+}
+
+.dialog-buttons .cancel {
+  background-color: #95a5a6;
+}
+
+.dialog-buttons .confirm {
+  background-color: #3498db;
+}
+
 /* 响应式设计 */
 @media (max-width: 600px) {
   .container {
@@ -362,4 +374,221 @@ dialog::backdrop {
   .countdown-info::before {
     font-size: 60px;
   }
+}
+
+/* 修改时间设置相关的样式 */
+.time-setter {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.time-setter input {
+  padding: 8px;
+  margin-right: 10px;
+  width: 100%;
+  max-width: 250px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* 优化时间选择器样式 */
+dialog input[type="datetime-local"] {
+  font-size: 16px;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 300px;
+  color: #2c3e50;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+dialog input[type="datetime-local"]:hover {
+  border-color: #3498db;
+  background-color: #fff;
+}
+
+dialog input[type="datetime-local"]:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+/* 美化时间选择对话框 */
+dialog.time-setter-dialog {
+  padding: 30px;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  animation: dialogFadeIn 0.3s ease;
+}
+
+dialog.time-setter-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+}
+
+dialog.time-setter-dialog h3 {
+  color: #2c3e50;
+  font-size: 1.5em;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+dialog.time-setter-dialog .time-setter {
+  margin: 25px 0;
+}
+
+dialog.time-setter-dialog .dialog-buttons {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+dialog.time-setter-dialog .button {
+  min-width: 120px;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+dialog.time-setter-dialog .button.cancel {
+  background-color: #95a5a6;
+}
+
+dialog.time-setter-dialog .button.cancel:hover {
+  background-color: #7f8c8d;
+}
+
+dialog.time-setter-dialog .button.confirm {
+  background-color: #3498db;
+}
+
+dialog.time-setter-dialog .button.confirm:hover {
+  background-color: #2980b9;
+}
+
+@keyframes dialogFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* 适配移动设备 */
+@media (max-width: 600px) {
+  dialog.time-setter-dialog {
+    width: 90%;
+    padding: 20px;
+  }
+
+  dialog.time-setter-dialog .button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+/* iOS 通知样式 */
+.ios-notification {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 12px;
+  padding: 12px 20px;
+  color: white;
+  z-index: 10000;
+  transition: top 0.3s ease;
+  max-width: 90%;
+  width: 300px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.ios-notification.show {
+  top: 20px;
+}
+
+.ios-notification-title {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.ios-notification-message {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* 适配刘海屏 */
+@supports (padding: max(0px)) {
+  .ios-notification {
+    padding-top: max(12px, env(safe-area-inset-top));
+  }
+}
+
+.notification-setter {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.notification-setter h4 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 1.1em;
+  text-align: center;
+}
+
+.notification-setter .time-inputs {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.notification-setter .input-group {
+  flex: 0 1 auto;
+  min-width: 80px;
+}
+
+.set-notify {
+  background-color: #9b59b6;
+}
+
+.set-notify:hover {
+  background-color: #8e44ad;
+}
+
+.timer-info .time-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.timer-info .notify-time {
+  color: #9b59b6;
+  font-weight: 500;
+}
+
+.notification-setter .last-notify {
+  text-align: center;
+  margin-bottom: 15px;
+  padding: 8px;
+  background: rgba(155, 89, 182, 0.1);
+  border-radius: 4px;
+  color: #9b59b6;
+  font-weight: 500;
 }
