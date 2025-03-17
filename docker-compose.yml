@@ -1,0 +1,17 @@
+version: "3"
+services:
+  app:
+    build: .
+    image: counttimer:1.3
+    ports:
+      - "8088:8088"
+      - "3000:3000"
+    volumes:
+      - ./:/app
+      - nginx_logs:/var/log/nginx
+      - task_data:/app/data
+    restart: always
+
+volumes:
+  nginx_logs:
+  task_data:

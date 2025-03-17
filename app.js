@@ -37,6 +37,7 @@ class TimerApp {
     this.notificationSound.volume = 1.0; // 最大音量
     this.notificationSound.loop = true; // 循环播放直到用户响应
     this.notificationSound.preload = "auto";
+    this.initWorker();
   }
 
   init() {
@@ -57,7 +58,7 @@ class TimerApp {
   }
 
   // 场景管理方法
-  createScene() {
+  async createScene() {
     const name = this.sceneNameInput.value.trim();
     if (!name) return;
 
@@ -377,6 +378,23 @@ class TimerApp {
       this.updateSceneDisplay(scene);
     }, 10);
 
+    // 如果设置了通知时间，创建服务端定时任务
+    if (scene.timer.notifyAt) {
+      const notifyElapsedTime = notifyOffset; // 这是预计的通知时刻已计时时间
+      fetch("http://192.168.50.244:3000/timer", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sceneId: scene.id,
+          notifyAt: scene.timer.notifyAt,
+          sceneName: scene.name,
+          elapsedTime: notifyOffset, // 使用通知时间点减去开始时间
+        }),
+      }).catch((error) => console.error("创建定时任务失败:", error));
+    }
+
     // 更新显示
     const oldCard = document.querySelector(`[data-scene-id="${scene.id}"]`);
     if (oldCard) {
@@ -454,6 +472,11 @@ class TimerApp {
   }
 
   resetAll(scene) {
+    // 删除服务端定时任务
+    fetch("http://192.168.50.244:3000/timer/" + scene.id, {
+      method: "DELETE",
+    }).catch((error) => console.error("删除定时任务失败:", error));
+
     // 重置正计时
     clearInterval(scene.timer.interval);
     scene.timer = {
@@ -555,6 +578,20 @@ class TimerApp {
 
       this.updateSceneDisplay(scene);
     }, 100);
+
+    // 创建服务端定时任务
+    fetch("http://192.168.50.244:3000/timer", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sceneId: scene.id,
+        notifyAt: scene.countdown.endTime,
+        sceneName: scene.name,
+        elapsedTime: this.formatTime(duration),
+      }),
+    }).catch((error) => console.error("创建定时任务失败:", error));
 
     // 立即更新显示
     const oldCard = document.querySelector(`[data-scene-id="${scene.id}"]`);
@@ -828,11 +865,26 @@ class TimerApp {
       const notifyOffset = (hours * 60 + minutes) * 60 * 1000;
 
       if (notifyOffset > 0) {
-        // 基于上次通知时间设置下一次通知时间
         const baseTime =
           scene.timer.notifyAt || Math.floor(Date.now() / 1000) * 1000;
         scene.timer.notifyAt = baseTime + notifyOffset;
         scene.timer.notified = false;
+
+        // 计算到通知时刻时的已计时时间
+        const notifyElapsedTime = scene.timer.notifyAt - scene.timer.startTime;
+
+        fetch("http://192.168.50.244:3000/timer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            sceneId: scene.id,
+            notifyAt: scene.timer.notifyAt,
+            sceneName: scene.name,
+            elapsedTime: notifyElapsedTime, // 使用预计的通知时刻计时时间
+          }),
+        }).catch((error) => console.error("创建定时任务失败:", error));
 
         // 立即更新显示
         const oldCard = document.querySelector(`[data-scene-id="${scene.id}"]`);
@@ -849,6 +901,24 @@ class TimerApp {
     };
 
     dialog.showModal();
+  }
+
+  initWorker() {
+    try {
+      this.worker = new Worker("timer-worker.js");
+      this.worker.onmessage = (e) => {
+        const { type, sceneId } = e.data;
+        if (type === "notification-triggered") {
+          const scene = this.scenes.find((s) => s.id === sceneId);
+          if (scene) {
+            scene.timer.notified = true;
+            this.saveToStorage();
+          }
+        }
+      };
+    } catch (error) {
+      console.error("Worker 初始化失败:", error);
+    }
   }
 }
 
